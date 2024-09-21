@@ -22,7 +22,7 @@ hello Amplicon!
 ```
 
 
-### 1. COMBINING `PAIRED`-END
+### 1. COMBINING PAIRED-END
 
 > [!Note]
 > RAWデータが"fastqディレクトリー"にある前提
@@ -37,7 +37,7 @@ hello Amplicon!
 
 ```
 
-`OUTPUT:`./pear/*_pear.assembled.fastq
+`OUTPUT:` ./pear/*_pear.assembled.fastq
 
 ### 2. REMOVE PRIMER
     -V4-V5
