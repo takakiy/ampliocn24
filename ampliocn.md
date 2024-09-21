@@ -53,7 +53,8 @@ mkdir cleanup; \
    -o ./cleanup/${k}_pear_noprim.fq out.fastq; \
  done
 ```
-    OUTPUT: ./cleanup/*_pear_noprim.fq
+
+`OUTPUT:` ./cleanup/*_pear_noprim.fq
 
 
 ### 3. FILTER QC & LENGTH
@@ -68,7 +69,8 @@ for i in ./cleanup/*_pear_noprim.fq; do a=$i; \
  done
 
 ```
-    [OUTPUT]: ./cleanup/*_pear_noprim_qc.fq
+
+`OUTPUT:` ./cleanup/*_pear_noprim_qc.fq
 
 
 > [!Tip]
