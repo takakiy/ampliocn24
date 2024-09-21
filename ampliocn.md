@@ -21,7 +21,6 @@ hello Amplicon!
 
 ```
 
-```
 
 1. COMBINING PAIRED-END
   RAWデータが"fastqディレクトリー"にある前提
@@ -51,9 +50,8 @@ mkdir cleanup; \
  cutadapt -j 12 -e 0.1 -a file:$HOME/Desktop/work_pop/bin/primer_rev_iupac_comp.fas -n 5 \
    -o ./cleanup/${k}_pear_noprim.fq out.fastq; \
  done
-
-
 ```
+
 > [!OUTPUT]
 > ./cleanup/*_pear_noprim.fq
 
@@ -70,6 +68,7 @@ for i in ./cleanup/*_pear_noprim.fq; do a=$i; \
  done
 
 ```
+
 > [!OUTPUT]
 > ./cleanup/*_pear_noprim_qc.fq
 
