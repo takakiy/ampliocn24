@@ -227,10 +227,8 @@ qiime feature-classifier classify-sklearn \
 
 
 ### 7 EXPORT DATA (BIOM => COUNT TABLE)
-
-+  
-    * **REPRESENT FAST**
-
+ 
++   **REPRESENT FAST**  
 
 ```
  qiime tools export --input-path rep-seqs-dada2-nochim.qza --output-path output
@@ -239,7 +237,7 @@ qiime feature-classifier classify-sklearn \
 `OUTPUT:`  
         ./output/dna-sequences.fasta  
 
-***   カウントテーブル   ****
++   **カウントテーブル**  
       sample-map.txtは、sample-metadata.tsvのヘッダーに#を付加したもの 
       
 ```
@@ -254,7 +252,7 @@ qiime feature-classifier classify-sklearn \
        ./output/feature-table.biom   
        ./output/feature-count-table.txt
 
-***   TAXONOMY ASSIGMENT***
++   **TAXONOMY ASSIGMENT**  
 
 ```
  qiime tools export --input-path taxonomy.qza --output-path output
@@ -263,7 +261,7 @@ qiime feature-classifier classify-sklearn \
 `OUTPUT:`  
         ./output/taxonomy.tsv
 
-***   ADDIN TAXON IN OTU_TABLE***
++   **ADDIN TAXON IN OTU_TABLE**  
 
 ```
  perl -i -pe 's/Feature ID/OTU/' ./output/taxonomy.tsv
@@ -277,7 +275,7 @@ qiime feature-classifier classify-sklearn \
         out_feature-count-table.txt
 
 
-***   CONVERT INTO ASV NAME   ***  
++   **CONVERT INTO ASV NAME**  
 
 ```
  perl -F'\t' -anle 'BEGIN{ $info={}; $no= 0; open(OUT,">out_asv_convert.lst.txt"); } if (/>(\S+)/) { $name=$1; $no++; $num=sprintf("%.5u",$no); $nname="ASV".$num; print ">$nname"; print OUT "$name\t$nname"; } else { print "$_"; } END{ }' ./output/dna-sequences.fasta > out_asv_dna-sequences.fasta
