@@ -36,7 +36,7 @@ hello Amplicon!
  done
 
 ```
-    <span style="color: blue; ">OUTPUT:</span> ./pear/*_pear.assembled.fastq
+    `OUTPUT:` ./pear/*_pear.assembled.fastq
 
 ### 2. REMOVE PRIMER
     -V4-V5
