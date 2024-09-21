@@ -1,6 +1,10 @@
 hello Amplicon!
 
 
++  
+    * **REPRESENT FAST**
+
+
 # WORK FLOW
 
 ## Fastq format
@@ -225,7 +229,9 @@ qiime feature-classifier classify-sklearn \
 
 ### 7 EXPORT DATA (BIOM => COUNT TABLE)
 
-----**REPRESENT FAST**
++  
+    * **REPRESENT FAST**
+
 
 ```
  qiime tools export --input-path rep-seqs-dada2-nochim.qza --output-path output
