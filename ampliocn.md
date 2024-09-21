@@ -11,8 +11,10 @@ hello Amplicon!
 ![Fastq image](images/fastq_code.png)
 
 
+#
+#
 
-### Reads count
+
 
 > [!Tip]
 > Count of reads
