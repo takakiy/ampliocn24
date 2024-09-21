@@ -235,9 +235,9 @@ qiime feature-classifier classify-sklearn \
 ```
 
 `OUTPUT:`  
-        ./output/dna-sequences.fasta  
+*   ./output/dna-sequences.fasta  
 
-+   **カウントテーブル**  
++   **COUNT TABLE**  
       sample-map.txtは、sample-metadata.tsvのヘッダーに#を付加したもの 
       
 ```
@@ -249,8 +249,8 @@ qiime feature-classifier classify-sklearn \
 ```
 
 `OUTPUT:`  
-       ./output/feature-table.biom   
-       ./output/feature-count-table.txt
+*   ./output/feature-table.biom   
+*   ./output/feature-count-table.txt
 
 +   **TAXONOMY ASSIGMENT**  
 
