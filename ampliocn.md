@@ -225,7 +225,7 @@ qiime feature-classifier classify-sklearn \
 
 ### 7 EXPORT DATA (BIOM => COUNT TABLE)
 
-**   REPRESENT FASTA   **
+   **REPRESENT FAST**
 
 ```
  qiime tools export --input-path rep-seqs-dada2-nochim.qza --output-path output
