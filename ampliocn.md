@@ -3,6 +3,11 @@ hello Amplicon!
 
 # WORK FLOW
 
+## Fastq format
+
+![Fastq image](images/fastq_code.png)
+
+
 
 ## Reads count
 
