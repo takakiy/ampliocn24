@@ -11,7 +11,7 @@ hello Amplicon!
 
 ## Reads count
 
-> [!TIPS]
+> [!Tip]
 > Count of reads
 ```
  files=`ls ./fastq/*_S*_L001_R1_001.fastq.gz`
@@ -34,7 +34,7 @@ hello Amplicon!
  done
 
 ```
-> [!OUTPUT]
+> [!Note]
 > ./pear/*_pear.assembled.fastq
 
 2. REMOVE PRIMER
@@ -52,7 +52,7 @@ mkdir cleanup; \
  done
 ```
 
-> [!OUTPUT]
+> [!Note]
 > ./cleanup/*_pear_noprim.fq
 
 
@@ -69,12 +69,13 @@ for i in ./cleanup/*_pear_noprim.fq; do a=$i; \
 
 ```
 
-> [!OUTPUT]
+> [!Note]
 > ./cleanup/*_pear_noprim_qc.fq
 
 
-> [!TIPS]
+> [!Tip]
 > Count of reads
+
 ```
  files=`ls ./cleanup/*_pear_noprim_qc.fq`
  ${HOME}/biotools/local/assembly/bin/seqkit stats $files > out.txt
