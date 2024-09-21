@@ -228,13 +228,14 @@ qiime feature-classifier classify-sklearn \
 
 ### 7 EXPORT DATA (BIOM => COUNT TABLE)
 
-    ### REPRESENT FASTA
+### REPRESENT FASTA
+
 ```
  qiime tools export --input-path rep-seqs-dada2-nochim.qza --output-path output
 ```
 
 `OUTPUT:`  
-  ./output/dna-sequences.fasta  
+        ./output/dna-sequences.fasta  
 
 
 
