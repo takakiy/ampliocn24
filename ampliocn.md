@@ -249,8 +249,8 @@ qiime feature-classifier classify-sklearn \
 ```
 
 `OUTPUT:`  
-*   ./output/feature-table.biom   
-*   ./output/feature-count-table.txt
+    *   ./output/feature-table.biom   
+    *   ./output/feature-count-table.txt
 
 +   **TAXONOMY ASSIGMENT**  
 
