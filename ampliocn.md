@@ -235,7 +235,7 @@ qiime feature-classifier classify-sklearn \
 ```
 
 `OUTPUT:`  
-*   ./output/dna-sequences.fasta  
+ ./output/dna-sequences.fasta  
 
 +   **COUNT TABLE**  
       sample-map.txtは、sample-metadata.tsvのヘッダーに#を付加したもの 
@@ -249,8 +249,8 @@ qiime feature-classifier classify-sklearn \
 ```
 
 `OUTPUT:`  
-    *   ./output/feature-table.biom   
-    *   ./output/feature-count-table.txt
+ ./output/feature-table.biom   
+ ./output/feature-count-table.txt
 
 +   **TAXONOMY ASSIGMENT**  
 
@@ -259,9 +259,9 @@ qiime feature-classifier classify-sklearn \
 ```
 
 `OUTPUT:`  
-        ./output/taxonomy.tsv
+ ./output/taxonomy.tsv
 
-+   **ADDIN TAXON IN OTU_TABLE**  
++   **ADDING TAXON IN COUNT TABLE**  
 
 ```
  perl -i -pe 's/Feature ID/OTU/' ./output/taxonomy.tsv
@@ -282,10 +282,10 @@ qiime feature-classifier classify-sklearn \
 ```
 
 `OUTPUT:`  
-       out_asv_dna-sequences.fasta
-       out_asv_convert.lst.txt
+ out_asv_dna-sequences.fasta
+ out_asv_convert.lst.txt
 
-***   ADDING ASV & LENGTH   ***   
++   **ADDING ASV & LENGTH**   
 
 ```
  gc_contentSkew.pl -if out_asv_dna-sequences.fasta -p gc
@@ -294,7 +294,7 @@ qiime feature-classifier classify-sklearn \
 ```
 
 `OUTPUT:`  
-        out_out_asv_convert.lst.txt
+  out_out_asv_convert.lst.txt
 
 ```
  perl -F'\t' -anle 'BEGIN{ $info={}; open(LI,"out_out_asv_convert.lst.txt"); while(<LI>) { chomp; @item=split/\t/; $info->{$item[0]}=[@item[1..2]]; }  } if($F[0] eq "OTU") { print (join "\t",@F,"asv","len"); } else { @ii= @{$info->{$F[0]}}; print (join "\t",@F,@ii); } END{ }' out_feature-count-table.txt > out_asv_feature-count-table.txt
@@ -306,17 +306,7 @@ qiime feature-classifier classify-sklearn \
 
 
 
-
-
-
-
-
-
-
-
-
-
-##***  Visualize summary stats *** *** *** 
++   **Visualize summary stats**  
 
 ```
 qiime metadata tabulate \
@@ -324,8 +314,8 @@ qiime metadata tabulate \
   --o-visualization stats.dada2.qzv
 ```
 
-  stats.chim.qzvをhttps://view.qiime2.org  へPUT
-##*** *** *** *** *** *** *** *** *** ***   
+xxxx.qzvをhttps://view.qiime2.org  へPUT
+  
 
 
 
