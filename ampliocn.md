@@ -59,7 +59,6 @@ mkdir cleanup; \
 
 ### 3. FILTER QC & LENGTH
    
-
 ```
 for i in ./cleanup/*_pear_noprim.fq; do a=$i; \
     j=${i##./*/}; k=${j%%_pear_noprim.fq}; a=$i; echo "$k"; \
@@ -85,12 +84,13 @@ for i in ./cleanup/*_pear_noprim.fq; do a=$i; \
 ```
 
 > [!Tip]
-> Count of reads
+> Statics of reads
 
 ```
 manu_fastq.pl -e stat -s ./cleanup/XXX_pear_noprim_qc.fq
 
 ```
+
 
 ## QIIME2
 
@@ -99,12 +99,9 @@ manu_fastq.pl -e stat -s ./cleanup/XXX_pear_noprim_qc.fq
 conda3
 conda activate qiime2-amplicon-2024.5
 
-mkdir qiime
-mv ./qiime
-
+(qiime2-amplicon-2024.5) mkdir qiime
+(qiime2-amplicon-2024.5) mv ./qiime
 ```
-
-
 
 ### 1 MAKE sample-manufest
 
@@ -228,7 +225,7 @@ qiime feature-classifier classify-sklearn \
 
 ### 7 EXPORT DATA (BIOM => COUNT TABLE)
 
-***   REPRESENT FASTA***
+**   REPRESENT FASTA   **
 
 ```
  qiime tools export --input-path rep-seqs-dada2-nochim.qza --output-path output
