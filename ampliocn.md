@@ -23,7 +23,7 @@ hello Amplicon!
 
 
 1. COMBINING PAIRED-END
-  RAWデータが"fastqディレクトリー"にある前提
+    -RAWデータが"fastqディレクトリー"にある前提
 
 ```
  mkdir pear; \
@@ -38,7 +38,7 @@ hello Amplicon!
 > ./pear/*_pear.assembled.fastq
 
 2. REMOVE PRIMER
-  -V4-V5
+    -V4-V5
 
 ```
 export PATH="/home/impact/biotools/rhel6/miniconda3/bin:$PATH"
