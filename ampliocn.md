@@ -228,7 +228,7 @@ qiime feature-classifier classify-sklearn \
 
 ### 7 EXPORT DATA (BIOM => COUNT TABLE)
 
-### REPRESENT FASTA
+***   REPRESENT FASTA***
 
 ```
  qiime tools export --input-path rep-seqs-dada2-nochim.qza --output-path output
@@ -237,34 +237,31 @@ qiime feature-classifier classify-sklearn \
 `OUTPUT:`  
         ./output/dna-sequences.fasta  
 
-
-
-    ### sample-map.txtは、sample-metadata.tsvのヘッダーに#を付加したもの
+***   カウントテーブル   ****
+      sample-map.txtは、sample-metadata.tsvのヘッダーに#を付加したもの 
+      
 ```
  perl -pe 's/sample-id/#sample-id/' sample-metadata.tsv > sample-map.txt
  qiime tools export --input-path table-dada2-nochim.qza --output-path output
-```
-
-`OUTPUT:`  
-     ./output/feature-table.biom   
-
-    ### COUNT TABLE
-```
  biom convert --to-tsv --table-type "OTU table" \
        -i ./output/feature-table.biom -o ./output/feature-count-table.txt \
        -m sample-map.txt
 ```
 
-        #==> ./output/feature-count-table.txt
+`OUTPUT:`  
+       ./output/feature-table.biom   
+       ./output/feature-count-table.txt
 
- ## TAXONOMY ASSIGMENT
+***   TAXONOMY ASSIGMENT***
+
 ```
  qiime tools export --input-path taxonomy.qza --output-path output
 ```
 
-        ##==> ./output/taxonomy.tsv
+`OUTPUT:`  
+        ./output/taxonomy.tsv
 
- ### ADDIN TAXON IN OTU_TABLE
+***   ADDIN TAXON IN OTU_TABLE***
 
 ```
  perl -i -pe 's/Feature ID/OTU/' ./output/taxonomy.tsv
@@ -274,19 +271,21 @@ qiime feature-classifier classify-sklearn \
        -a ./output/taxonomy.tsv -key 0 0 -val 1
 ```
 
-    #==> out_feature-count-table.txt
+`OUTPUT:`  
+        out_feature-count-table.txt
 
 
-  ## CONVERT INTO ASV NAME
+***   CONVERT INTO ASV NAME   ***  
 
 ```
  perl -F'\t' -anle 'BEGIN{ $info={}; $no= 0; open(OUT,">out_asv_convert.lst.txt"); } if (/>(\S+)/) { $name=$1; $no++; $num=sprintf("%.5u",$no); $nname="ASV".$num; print ">$nname"; print OUT "$name\t$nname"; } else { print "$_"; } END{ }' ./output/dna-sequences.fasta > out_asv_dna-sequences.fasta
 ```
 
-    #==> out_asv_dna-sequences.fasta
-    #==> out_asv_convert.lst.txt
+`OUTPUT:`  
+       out_asv_dna-sequences.fasta
+       out_asv_convert.lst.txt
 
-##  ADDING ASV & LENGTH
+***   ADDING ASV & LENGTH   ***   
 
 ```
  gc_contentSkew.pl -if out_asv_dna-sequences.fasta -p gc
@@ -294,14 +293,15 @@ qiime feature-classifier classify-sklearn \
        -a outgc -key 1 0 -val 1
 ```
 
-    #=> out_out_asv_convert.lst.txt
+`OUTPUT:`  
+        out_out_asv_convert.lst.txt
 
 ```
  perl -F'\t' -anle 'BEGIN{ $info={}; open(LI,"out_out_asv_convert.lst.txt"); while(<LI>) { chomp; @item=split/\t/; $info->{$item[0]}=[@item[1..2]]; }  } if($F[0] eq "OTU") { print (join "\t",@F,"asv","len"); } else { @ii= @{$info->{$F[0]}}; print (join "\t",@F,@ii); } END{ }' out_feature-count-table.txt > out_asv_feature-count-table.txt
 ```
 
-
-    #==> out_asv_feature-count-table.txt
+`OUTPUT:`  
+       out_asv_feature-count-table.txt
 
 
 
