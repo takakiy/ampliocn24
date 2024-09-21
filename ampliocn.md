@@ -9,7 +9,7 @@ hello Amplicon!
 
 
 
-## Reads count
+### Reads count
 
 > [!Tip]
 > Count of reads
@@ -22,7 +22,7 @@ hello Amplicon!
 ```
 
 
-1. COMBINING PAIRED-END
+### 1. COMBINING PAIRED-END
 
 > [!Note]
 > RAWデータが"fastqディレクトリー"にある前提
@@ -36,9 +36,9 @@ hello Amplicon!
  done
 
 ```
-OUTPUT: ./pear/*_pear.assembled.fastq
+    <span style="color: blue; ">OUTPUT:</span> ./pear/*_pear.assembled.fastq
 
-2. REMOVE PRIMER
+### 2. REMOVE PRIMER
     -V4-V5
 
 ```
@@ -52,11 +52,10 @@ mkdir cleanup; \
    -o ./cleanup/${k}_pear_noprim.fq out.fastq; \
  done
 ```
+    OUTPUT: ./cleanup/*_pear_noprim.fq
 
-OUTPUT: ./cleanup/*_pear_noprim.fq
 
-
-3. FILTER QC & LENGTH
+### 3. FILTER QC & LENGTH
    
 
 ```
@@ -68,8 +67,7 @@ for i in ./cleanup/*_pear_noprim.fq; do a=$i; \
  done
 
 ```
-
-OUTPUT: ./cleanup/*_pear_noprim_qc.fq
+    [OUTPUT]: ./cleanup/*_pear_noprim_qc.fq
 
 
 > [!Tip]
@@ -82,3 +80,267 @@ OUTPUT: ./cleanup/*_pear_noprim_qc.fq
  perl -F'\s+' -anle 'BEGIN{ $info={}; } next if (/^file/);  $file= $1 if ($F[0]=~/.*\/(\S+)$/); $lib= $1 if ($file=~/^(\S+)_pear_noprim_qc.fq/); print "$lib\t$file\t$F[3]\t$F[4]\t$F[6]"; END{ }' out.txt
 
 ```
+
+> [!Tip]
+> Count of reads
+
+```
+manu_fastq.pl -e stat -s ./cleanup/XXX_pear_noprim_qc.fq
+
+```
+
+## QIIME2
+
+
+```
+conda3
+conda activate qiime2-amplicon-2024.5
+
+mkdir qiime
+mv ./qiime
+
+```
+
+
+
+### 1 MAKE sample-manufest
+
+```
+echo -e "sample-id\tabsolute-filepath" > sample-manufest; \
+  echo -e "sample-id\tocean\tpublish" > sample-metadata.tsv; \
+ for i in ../cleanup/*_pear_noprim_qc.fq; do j=${i##../*/}; \
+   k=${j%%_pear_noprim_qc.fq}; id=${k//-/.};
+   dir=$( cd ${i%/*_pear_noprim_qc.fq}; pwd); abpath="${dir}/${j}"; \
+   echo "${id} $abpath"; \
+  echo -e "${id}\txxx\tyyy" >> sample-metadata.tsv; \
+  echo -e "${id}\t$abpath" >> sample-manufest; \
+  done
+```
+
+    #==> sample-manufest    ###  サンプルIDとfastqのPATH
+    #==> sample-metadata.tsv   ###  サンプルIDとメタ情報
+
+### 2 IMPORT FASTQ
+
+```
+qiime tools import --type SampleData[SequencesWithQuality] \
+ --input-path sample-manufest \
+ --output-path sequence.qza \
+ --input-format SingleEndFastqManifestPhred33V2
+```
+
+    #==> sequence.qza
+
+## Sequence quality control and feature table construction
+### 3 DADA2
+
+```
+qiime dada2 denoise-single \
+ --i-demultiplexed-seqs sequence.qza \
+ --p-trim-left 0 \
+ --p-trunc-len 0 \
+ --o-representative-sequences rep-seqs-dada2.qza \
+ --o-table table-dada2.qza \
+ --o-denoising-stats stats-dada2.qza \
+ --p-n-threads 24
+```
+
+    #==> rep-seqs-dada2.qza
+    #==> table-dada2.qza
+
+
+##***  Visualize summary stats *** *** *** 
+
+```
+qiime metadata tabulate \
+  --m-input-file stats-dada2.qza \
+  --o-visualization stats.dada2.qzv
+```
+
+  stats.chim.qzvをhttps://view.qiime2.org  へPUT
+##*** *** *** *** *** *** *** *** *** ***   
+
+
+
+## 4) CHIMERA
+## Identifying and filtering chimeric feature sequences with q2-vsearch
+
+```
+qiime vsearch uchime-denovo \
+  --i-table table-dada2.qza \
+  --i-sequences rep-seqs-dada2.qza \
+  --output-dir uchime-dn-out
+```
+
+    #==> ./uchime-dn-out/nonchimeras.qza
+    #==> ./uchime-dn-out/chimeras.qza
+    #==> ./uchime-dn-out/stats.qza
+
+```
+qiime feature-table filter-features \
+  --i-table table-dada2.qza \
+  --m-metadata-file uchime-dn-out/chimeras.qza \
+  --p-exclude-ids \
+  --o-filtered-table uchime-dn-out/table-nonchimeric-w-borderline.qza
+ qiime feature-table filter-seqs \
+  --i-data rep-seqs-dada2.qza \
+  --m-metadata-file uchime-dn-out/chimeras.qza \
+  --p-exclude-ids \
+  --o-filtered-data uchime-dn-out/rep-seqs-nonchimeric-w-borderline.qza
+ qiime feature-table summarize \
+  --i-table uchime-dn-out/table-nonchimeric-w-borderline.qza \
+  --o-visualization uchime-dn-out/table-nonchimeric-w-borderline.qzv
+```
+
+    #==> uchime-dn-out/table-nonchimeric-w-borderline.qza
+    #==> uchime-dn-out/rep-seqs-nonchimeric-w-borderline.qza
+    #==> uchime-dn-out/table-nonchimeric-w-borderline.qzv         ## xx
+```
+
+ mv ./uchime-dn-out/table-nonchimeric-w-borderline.qza table-dada2-nochim.qza
+ mv ./uchime-dn-out/rep-seqs-nonchimeric-w-borderline.qza rep-seqs-dada2-nochim.qza
+```
+
+
+    #==> table-dada2-nochim.qza
+    #==> rep-seqs-dada2-nochim.qza
+
+
+##***  Visualize summary stats *** *** *** 
+
+```
+qiime metadata tabulate \
+  --m-input-file uchime-dn-out/stats.qza \
+  --o-visualization stats.chim.qzv
+```
+
+  stats.chim.qzvをhttps://view.qiime2.org  へPUT
+
+ qiime tools export --input-path ./uchime-dn-out/chimeras.qza --output-path xoutput
+
+
+##*** *** *** *** *** *** *** *** *** ***   
+
+
+## 5)   CLUSTERING (OTU)
+```
+qiime vsearch cluster-features-de-novo \
+ --i-table table-dada2-nochim.qza \
+ --i-sequences rep-seqs-dada2-nochim.qza \
+ --p-perc-identity 0.97 \
+ --o-clustered-table table-dn-97.qza \
+ --o-clustered-sequences rep-seqs-dn-97.qza \
+ --p-threads 16
+```
+
+#==> table-dn-97.qza
+#==> rep-seqs-dn-97.qza   ## xxx
+
+
+
+
+
+
+## 6)  TAXONOMY ASSIGNMENT
+## “Moving Pictures” tutorial
+https://docs.qiime2.org/2019.10/tutorials/moving-pictures/#moving-pics-taxonomy
+### Taxonomic analysis
+
+### ASSIGNMENT
+```
+qiime feature-classifier classify-sklearn \
+  --i-classifier /home/impact/biotools/local/population/qiime2/ref/qiime2-amplicon-2024.5/silva-1381-ssu-nr99-classifier.qza \
+  --i-reads rep-seqs-dada2-nochim.qza \
+  --p-n-jobs 24 \
+  --o-classification taxonomy.qza
+```
+
+
+$ qiime feature-classifier classify-sklearn \
+  --i-classifier $HOME/biotools/local/population/qiime2/ref/qiime2-amplicon-2024.5/SILVA_138.2_SSURef_NR99_tax_silva_trunc-classifier.qza \
+  --i-reads rep-seqs-dada2-nochim.qza \
+  --p-n-jobs 24 \
+  --o-classification taxonomy.qza
+
+
+
+
+
+## 7) EXPORT DATA (BIOM => COUNT TABLE)
+
+ ### REPRESENT FASTA
+ qiime tools export --input-path rep-seqs-dada2-nochim.qza --output-path output
+
+    ##==> grep -c ">" ./output/dna-sequences.fasta   ## 24548
+
+
+
+ ### sample-map.txtは、sample-metadata.tsvのヘッダーに#を付加したもの
+ perl -pe 's/sample-id/#sample-id/' sample-metadata.tsv > sample-map.txt
+ qiime tools export --input-path table-dada2-nochim.qza --output-path output
+
+   ##==>  ./output/feature-table.biom
+
+ ### COUNT TABLE
+ biom convert --to-tsv --table-type "OTU table" \
+       -i ./output/feature-table.biom -o ./output/feature-count-table.txt \
+       -m sample-map.txt
+
+        #==> ./output/feature-count-table.txt
+
+ ## TAXONOMY ASSIGMENT
+ qiime tools export --input-path taxonomy.qza --output-path output
+
+        ##==> ./output/taxonomy.tsv
+
+ ### ADDIN TAXON IN OTU_TABLE
+
+ perl -i -pe 's/Feature ID/OTU/' ./output/taxonomy.tsv
+ perl -i -pe 's/#OTU ID/OTU/' ./output/feature-count-table.txt
+
+ $HOME/Desktop/work_genome/bin/adding_info_list.pl -i ./output/feature-count-table.txt \
+       -a ./output/taxonomy.tsv -key 0 0 -val 1
+
+    #==> out_feature-count-table.txt
+
+
+  ## CONVERT INTO ASV NAME
+
+ perl -F'\t' -anle 'BEGIN{ $info={}; $no= 0; open(OUT,">out_asv_convert.lst.txt"); } if (/>(\S+)/) { $name=$1; $no++; $num=sprintf("%.5u",$no); $nname="ASV".$num; print ">$nname"; print OUT "$name\t$nname"; } else { print "$_"; } END{ }' ./output/dna-sequences.fasta > out_asv_dna-sequences.fasta
+
+    #==> out_asv_dna-sequences.fasta
+    #==> out_asv_convert.lst.txt
+
+##  ADDING ASV & LENGTH
+
+ gc_contentSkew.pl -if out_asv_dna-sequences.fasta -p gc
+ $HOME/Desktop/work_genome/bin/adding_info_list.pl -i out_asv_convert.lst.txt \
+       -a outgc -key 1 0 -val 1
+
+    #=> out_out_asv_convert.lst.txt
+
+ perl -F'\t' -anle 'BEGIN{ $info={}; open(LI,"out_out_asv_convert.lst.txt"); while(<LI>) { chomp; @item=split/\t/; $info->{$item[0]}=[@item[1..2]]; }  } if($F[0] eq "OTU") { print (join "\t",@F,"asv","len"); } else { @ii= @{$info->{$F[0]}}; print (join "\t",@F,@ii); } END{ }' out_feature-count-table.txt > out_asv_feature-count-table.txt
+
+
+    #==> out_asv_feature-count-table.txt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
