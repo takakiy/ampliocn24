@@ -36,7 +36,8 @@ hello Amplicon!
  done
 
 ```
-    `OUTPUT:`./pear/*_pear.assembled.fastq
+
+`OUTPUT:`./pear/*_pear.assembled.fastq
 
 ### 2. REMOVE PRIMER
     -V4-V5
