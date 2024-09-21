@@ -1,8 +1,7 @@
 hello Amplicon!
 
 
-+  
-    * **REPRESENT FAST**
++   **REPRESENT FAST**
 
 
 # WORK FLOW
