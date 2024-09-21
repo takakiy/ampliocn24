@@ -121,7 +121,9 @@ echo -e "sample-id\tabsolute-filepath" > sample-manufest; \
 ```
 
 `OUTPUT:` 
+
 sample-manufest    ###  サンプルIDとfastqのPATH
+
 sample-metadata.tsv   ###  サンプルIDとメタ情報
 
 ### 2 IMPORT FASTQ
