@@ -22,7 +22,7 @@ hello Amplicon!
 ```
 
 
-### 1. COMBINING PAIRED-END
+### 1. COMBINING `PAIRED`-END
 
 > [!Note]
 > RAWデータが"fastqディレクトリー"にある前提
