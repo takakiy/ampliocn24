@@ -37,7 +37,7 @@ library(qiime2R)
 
 ```
 
-## 1. 細菌占有率グラフの作成(Familyレベル)
+## 1. 細菌占有率グラフ
 
 ```
 MicrobeR::Microbiome.Barplot(Summarize.Taxa(otus$data, as.data.frame(tax_table))$Family, metadata, CATEGORY="condition")
@@ -50,7 +50,9 @@ MicrobeR::Microbiome.Barplot(Summarize.Taxa(otus$data, as.data.frame(tax_table))
  ggsave("out_ps_p_bar.png")
 ```
 
-## 2 α多様性（Chao1 indexとShannon index）グラフ
+![Bar image](images/out_ps_class_bar.png)
+
+## 2 α多様性グラフ
 
 ```
  p <- plot_richness(physeq, color = "samples", x = "samples", measures=c("Chao1", "Shannon"))
@@ -68,7 +70,9 @@ MicrobeR::Microbiome.Barplot(Summarize.Taxa(otus$data, as.data.frame(tax_table))
 
 ```
 
-## 3. β多様性（unweighted UniFrac, PC1vs PC2）グラフ
+![Alpha diversity image](images/out_ps_alpha_box.png)
+
+## 3. β多様性（unweighted/weighted UniFrac）グラフ
 
 ```
  ord1 <- ordinate(physeq, method = "PCoA", distance = "unifrac")
@@ -98,6 +102,8 @@ weighted UniFrac
  ggsave("out_ps_PCoA_wunifrac.png")
 
 ```
+
+![PCA plot image](images/out_ps_PCA_wunifrac.png)
 
 ## 4 系統樹の描画
 
@@ -160,6 +166,8 @@ weighted UniFrac
 
 ```
 
+![Rarefaction curve image](images/out_ps_rarecurve.png)
+
 ## 7. NMDS
 
 
@@ -172,12 +180,12 @@ weighted UniFrac
   geom_point(size = 2) + scale_color_startrek() + scale_fill_startrek() +
   xlab("Axis 1") + ylab("Axis 2") + ggtitle("NMDS")
 
-
- ggsave("out_ps_rarecurve.ps")
- ggsave("out_ps_rarecurve.png")
+ ggsave("out_ps_nmds.ps")
+ ggsave("out_ps_nmds.png")
 
 ```
 
+![Rarefaction curve image](images/out_ps_nmds.png)
 
 
 
