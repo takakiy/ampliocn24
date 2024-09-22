@@ -50,7 +50,7 @@ MicrobeR::Microbiome.Barplot(Summarize.Taxa(otus$data, as.data.frame(tax_table))
  ggsave("out_ps_p_bar.png")
 ```
 
-![Bar image](images/out_ps_class_bar.png)
+![Bar image](images/out_ps_class_bar2.png)
 
 ## 2 α多様性グラフ
 
