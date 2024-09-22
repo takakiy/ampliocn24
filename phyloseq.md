@@ -191,3 +191,35 @@ weighted UniFrac
 
 
 
+# 参照
+
+Phyloseq home
+https://joey711.github.io/phyloseq/plot_ordination-examples.html
+
+
+phyloseqオブジェクトの作成
+https://qiita.com/akari5/items/6753d3addc28f719a0c5
+
+phyloseq による DADA2 処理後の統計解析
+https://ushio-ecology-blog.blogspot.com/2021/04/20210428blogger0015.html
+
+Qiime2 を用いた 16S rRNA 菌叢解析
+https://qiita.com/keisuke-ota/items/6399b2f2f7459cd9e418
+
+Qiime2やRのPhyloseq、STAMPによる細菌叢解析
+https://qiita.com/kuanl/items/a1f98f76ea5a651753f2
+
+初心者の菌叢解析 Qiime2で解析(10) 多様性解析 ~α多様性~
+https://note.com/nanaimo_/n/n8543a6008acd
+
+
+
+
+
+
+
+
+
+
+
+
