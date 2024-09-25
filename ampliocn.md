@@ -1,17 +1,11 @@
-hello Amplicon!
 
-
-+   **REPRESENT FAST**
-
-
-# WORK FLOW
+# WORK FLOW OF AMPLICON ANALYSIS
 
 ## Fastq format
 
 ![Fastq image](images/fastq_code.png)
 
 
-#
 #
 
 
@@ -35,7 +29,7 @@ hello Amplicon!
 ```
  mkdir pear; \
   for i in ./fastq/*_L001_R1_001.fastq.gz; do a=$i; \
-   j=${i##./*/}; k=${j%%-P_S*_L001_R1_001.fastq.gz}; echo "$k";
+   j=${i##./*/}; k=${j%%_S*_L001_R1_001.fastq.gz}; echo "$k";
   $HOME/biotools/local/assembly/pear-0.9.10-bin-64/pear-0.9.10-bin-64 \
     -f $i -r ${i/_R1/_R2} -o ./pear/${k}_pear -j 12; \
  done
@@ -58,6 +52,22 @@ mkdir cleanup; \
    -o ./cleanup/${k}_pear_noprim.fq out.fastq; \
  done
 ```
+
+    -V4
+
+
+```
+export PATH="/home/impact/biotools/rhel6/miniconda3/bin:$PATH"
+mkdir cleanup; \
+ for i in ./pear/*_pear.assembled.fastq; do a=$i; \
+    j=${i##./*/}; k=${j%%_pear.assembled.fastq}; a=$i; echo "$k"; \
+ cutadapt -j 12 -e 0.1 -g file:$HOME/Desktop/work_pop/bin/primer_fasmac_fwd.fas -n 5 \
+   -o out.fastq $i; \
+ cutadapt -j 12 -e 0.1 -a file:$HOME/Desktop/work_pop/bin/primer_fasmac_rev_comp.fas -n 5 \
+   -o ./cleanup/${k}_pear_noprim.fq out.fastq; \
+ done
+```
+
 
 `OUTPUT:` ./cleanup/*_pear_noprim.fq
 
