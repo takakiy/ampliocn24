@@ -239,7 +239,10 @@ qiime feature-classifier classify-sklearn \
 ```
  qiime phylogeny align-to-tree-mafft-fasttree \
   --i-sequences rep-seqs-dada2-nochim.qza \
-  --output-dir phylogeny-align-to-tree-mafft-fasttree
+  --o-alignment aligned-rep-seqs.qza \
+  --o-masked-alignment masked-aligned-rep-seqs.qza \
+  --o-tree unrooted-tree.qza \
+  --o-rooted-tree rooted-tree.qza
 
 ```
 
@@ -339,12 +342,10 @@ qiime metadata tabulate \
   --o-visualization stats.dada2.qzv
 ```
 
-xxxx.qzvをhttps://view.qiime2.org  へPUT
-  
-
 
 ```
 
++   **Visualize Bar PLOT**  
 
  qiime taxa barplot \
  --i-table table-dada2-nochim.qza \
@@ -356,7 +357,21 @@ xxxx.qzvをhttps://view.qiime2.org  へPUT
 
 ```
 
+xxxx.qzvを  https://view.qiime2.org  へPUT
+  
 
+
+
+# 参照
+
+Qiime2 を用いた 16S rRNA 菌叢解析
+https://qiita.com/keisuke-ota/items/6399b2f2f7459cd9e418
+
+Qiime2やRのPhyloseq、STAMPによる細菌叢解析
+https://qiita.com/kuanl/items/a1f98f76ea5a651753f2
+
+初心者の菌叢解析 Qiime2で解析(10) 多様性解析 ~α多様性~
+https://note.com/nanaimo_/n/n8543a6008acd
 
 
 
