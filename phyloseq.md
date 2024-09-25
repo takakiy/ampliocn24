@@ -55,7 +55,7 @@ MicrobeR::Microbiome.Barplot(Summarize.Taxa(otus$data, as.data.frame(tax_table))
 ## 2 α多様性グラフ
 
 ```
- p <- plot_richness(physeq, color = "samples", x = "samples", measures=c("Chao1", "Shannon","Simpson"))
+ p <- plot_richness(physeq, color = "samples", x = "samples", measures=c("Observed","Chao1","Shannon","Simpson"))
  p <- p + geom_boxplot(aes(fill = samples), alpha=0.3) + theme_bw() + 
     theme(
           text=element_text(size=20), 
