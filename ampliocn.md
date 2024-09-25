@@ -343,8 +343,18 @@ xxxx.qzvをhttps://view.qiime2.org  へPUT
   
 
 
+```
 
 
+ qiime taxa barplot \
+ --i-table table-dada2-nochim.qza \
+ --i-taxonomy taxonomy.qza \
+ --m-metadata-file sample-metadata.tsv \
+ --o-visualization taxa-bar-plots.qzv
+
+    #==> taxa-bar-plots.qzv
+
+```
 
 
 
