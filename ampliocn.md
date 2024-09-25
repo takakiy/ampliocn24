@@ -234,11 +234,24 @@ qiime feature-classifier classify-sklearn \
   --o-classification taxonomy.qza
 ```
 
+### 7 BUILD TREE
+
+```
+ qiime phylogeny align-to-tree-mafft-fasttree \
+  --i-sequences rep-seqs-dada2-nochim.qza \
+  --output-dir phylogeny-align-to-tree-mafft-fasttree
+
+```
+
+`OUTPUT:` 
+phylogeny-align-to-tree-mafft-fasttree/alignment.qza
+phylogeny-align-to-tree-mafft-fasttree/masked_alignment.qza
+phylogeny-align-to-tree-mafft-fasttree/tree.qza
+phylogeny-align-to-tree-mafft-fasttree/rooted_tree.qza
 
 
 
-
-### 7 EXPORT DATA (BIOM => COUNT TABLE)
+### 8 EXPORT DATA (BIOM => COUNT TABLE)
  
 +   **REPRESENT FAST**  
 
