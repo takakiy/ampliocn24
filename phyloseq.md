@@ -40,7 +40,7 @@ library(qiime2R)
 ## 1. 細菌占有率グラフ
 
 ```
-MicrobeR::Microbiome.Barplot(Summarize.Taxa(otus$data, as.data.frame(tax_table))$Family, metadata, CATEGORY="condition")
+MicrobeR::Microbiome.Barplot(Summarize.Taxa(otus$data, as.data.frame(tax_table))$Family, metadata, CATEGORY="ocean")
 ```
 
 ```
@@ -55,7 +55,7 @@ MicrobeR::Microbiome.Barplot(Summarize.Taxa(otus$data, as.data.frame(tax_table))
 ## 2 α多様性グラフ
 
 ```
- p <- plot_richness(physeq, color = "samples", x = "samples", measures=c("Chao1", "Shannon"))
+ p <- plot_richness(physeq, color = "samples", x = "samples", measures=c("Chao1", "Shannon","Simpson"))
  p <- p + geom_boxplot(aes(fill = samples), alpha=0.3) + theme_bw() + 
     theme(
           text=element_text(size=20), 
@@ -168,7 +168,7 @@ weighted UniFrac
 
 ![Rarefaction curve image](images/out_ps_rarecurve.png)
 
-## 7. NMDS
+## 7-1. NMDS
 
 
 ```
@@ -188,9 +188,42 @@ weighted UniFrac
 ![Rarefaction curve image](images/out_ps_nmds.png)
 
 
+## 7-2. t-SNE
 
+```
+ library("devtools")
+ install_github("opisthokonta/tsnemicrobiota")
 
+library(tsnemicrobiota)
+tsne_res <- tsnemicrobiota::tsne_phyloseq(physeq, distance='bray', perplexity = 5, rng_seed = 1234)
+tsnemicrobiota::plot_tsne_phyloseq(ps_sea, tsne_res, color = "Method", shape = "Method") +
+  stat_ellipse(geom = "polygon", alpha = 0.1, aes(fill=Method)) +
+  geom_point(size = 2) + scale_color_startrek() + scale_fill_startrek() +
+  xlab("Axis 1") + ylab("Axis 2") + ggtitle("t-SNE")
+  
+```
 
+## 7-2. UMAP
+  
+```
+
+ install.packages("uwot")
+
+ library(uwot)
+ 
+ set.seed(1234)
+ umap_res <- uwot::tumap(otu_table(ps_sea)@.Data, n_neighbors = 5, n_components = 2)
+ umap_df <- cbind(data.frame(sample_data(ps_sea)), umap_res)
+ colnames(umap_df)[(ncol(umap_df)-1):ncol(umap_df)] <- c("UMAP1", "UMAP2")
+ ggplot(umap_df, aes(x = UMAP1, y = UMAP2, color = Method, shape = Method)) +
+   stat_ellipse(geom = "polygon", alpha = 0.1, aes(fill=Method)) +
+   geom_point(size = 2) + scale_color_startrek() + scale_fill_startrek() +
+   xlab("Axis 1") + ylab("Axis 2") + ggtitle("UMAP")
+  
+  
+```
+  
+  
 # 参照
 
 Phyloseq home
@@ -202,16 +235,6 @@ https://qiita.com/akari5/items/6753d3addc28f719a0c5
 
 phyloseq による DADA2 処理後の統計解析
 https://ushio-ecology-blog.blogspot.com/2021/04/20210428blogger0015.html
-
-Qiime2 を用いた 16S rRNA 菌叢解析
-https://qiita.com/keisuke-ota/items/6399b2f2f7459cd9e418
-
-Qiime2やRのPhyloseq、STAMPによる細菌叢解析
-https://qiita.com/kuanl/items/a1f98f76ea5a651753f2
-
-初心者の菌叢解析 Qiime2で解析(10) 多様性解析 ~α多様性~
-https://note.com/nanaimo_/n/n8543a6008acd
-
 
 
 
