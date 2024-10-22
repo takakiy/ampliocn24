@@ -47,9 +47,9 @@ mkdir cleanup; \
  for i in ./pear/*_pear.assembled.fastq; do a=$i; \
     j=${i##./*/}; k=${j%%_pear.assembled.fastq}; a=$i; echo "$k"; \
  cutadapt -j 12 -e 0.1 -g file:$HOME/Desktop/work_pop/bin/primer_fwd_iupac.fas -n 5 \
-   -o out.fastq $i; \
+   --minimum-length 100 --discard-untrimmed -o out.fastq $i; \
  cutadapt -j 12 -e 0.1 -a file:$HOME/Desktop/work_pop/bin/primer_rev_iupac_comp.fas -n 5 \
-   -o ./cleanup/${k}_pear_noprim.fq out.fastq; \
+   --minimum-length 100 --discard-untrimmed -o ./cleanup/${k}_pear_noprim.fq out.fastq; \
  done
 ```
 
@@ -62,9 +62,9 @@ mkdir cleanup; \
  for i in ./pear/*_pear.assembled.fastq; do a=$i; \
     j=${i##./*/}; k=${j%%_pear.assembled.fastq}; a=$i; echo "$k"; \
  cutadapt -j 12 -e 0.1 -g file:$HOME/Desktop/work_pop/bin/primer_fasmac_fwd.fas -n 5 \
-   -o out.fastq $i; \
+   --minimum-length 100 --discard-untrimmed -o out.fastq $i; \
  cutadapt -j 12 -e 0.1 -a file:$HOME/Desktop/work_pop/bin/primer_fasmac_rev_comp.fas -n 5 \
-   -o ./cleanup/${k}_pear_noprim.fq out.fastq; \
+   --minimum-length 100 --discard-untrimmed -o ./cleanup/${k}_pear_noprim.fq out.fastq; \
  done
 ```
 
@@ -159,6 +159,7 @@ qiime dada2 denoise-single \
  --o-representative-sequences rep-seqs-dada2.qza \
  --o-table table-dada2.qza \
  --o-denoising-stats stats-dada2.qza \
+ --p-n-reads-learn 100000 \
  --p-n-threads 24
 ```
 
