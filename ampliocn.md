@@ -115,7 +115,7 @@ conda3
 conda activate qiime2-amplicon-2024.5
 
 (qiime2-amplicon-2024.5) mkdir qiime
-(qiime2-amplicon-2024.5) mv ./qiime
+(qiime2-amplicon-2024.5) cd ./qiime
 ```
 
 ### 1 MAKE sample-manufest
