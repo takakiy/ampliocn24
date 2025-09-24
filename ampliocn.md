@@ -75,13 +75,15 @@ mkdir cleanup; \
 ### 3. FILTER QC & LENGTH
    
 ```
-for i in ./cleanup/*_pear_noprim.fq; do a=$i; \
+ for i in ./cleanup/*_pear_noprim.fq; do a=$i; \
     j=${i##./*/}; k=${j%%_pear_noprim.fq}; a=$i; echo "$k"; \
- $HOME/Desktop/work_pop/bin/pickup_qc_fastq.pl -se ./cleanup/${k}_pear_noprim.fq \
-        -qc 30 0.98 -minlen 100 -maxlen 550; \
- mv out_pickup_R1_SE.fq ./cleanup/${k}_pear_noprim_qc.fq; \
+   $HOME/Desktop/work_pop/bin/pickup_qc_fastq.pl -se ./cleanup/${k}_pear_noprim.fq \
+        -qc 30 0.98 -minlen 100 -maxlen 600 \
+      -minAmb 0 -lowQC 2; \
+   mv out_pickup_R1_SE.fq ./cleanup/${k}_pear_noprim_qc.fq; \
  done
 
+### Remove reads with over 0 base (-minAmb 0) of Minimum Phred QC (-lowQC 2) 
 ```
 
 `OUTPUT:` ./cleanup/*_pear_noprim_qc.fq
