@@ -114,10 +114,10 @@ manu_fastq.pl -e stat -s ./cleanup/XXX_pear_noprim_qc.fq
 
 ```
 conda3
-conda activate qiime2-amplicon-2024.5
+conda activate qiime2-amplicon-2025.7
 
-(qiime2-amplicon-2024.5) mkdir qiime
-(qiime2-amplicon-2024.5) cd ./qiime
+(qiime2-amplicon-2025.7) mkdir qiime
+(qiime2-amplicon-2025.7) cd ./qiime
 ```
 
 ### 1 MAKE sample-manufest
@@ -230,12 +230,19 @@ qiime vsearch cluster-features-de-novo \
 ### 6 TAXONOMY ASSIGNMENT
 
 ```
+DBHH="${HOME}/biotools/local/population/qiime2/ref/qiime2-amplicon-2025.7/release_138.2/QIIME2/2025.7/SSU"
+#classifier="$DBHH/full-length/uniform/SILVA138.2_SSURef_NR99_uniform_classifier_full-length.qza"
+#classifier="$DBHH/V4-515f-806r/uniform/SILVA138.2_SSURef_NR99_uniform_classifier_V4-515f-806r.qza"
+classifier="$DBHH/V4V5-515f-926r/uniform/SILVA138.2_SSURef_NR99_uniform_classifier_V4V5-515f-926r.qza"
+
 qiime feature-classifier classify-sklearn \
-  --i-classifier $HOME/biotools/local/population/qiime2/ref/qiime2-amplicon-2024.5/SILVA_138.2_SSURef_NR99_tax_silva_trunc-classifier.qza \
+  --i-classifier $classifier \
   --i-reads rep-seqs-dada2-nochim.qza \
   --p-n-jobs 24 \
   --o-classification taxonomy.qza
 ```
+`COMMENT` 
+ classifier: Please select the appropriate file.
 
 ### 7 BUILD TREE
 
